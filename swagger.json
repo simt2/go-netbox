@@ -13985,8 +13985,13 @@
               "type": "string"
             },
             "value": {
-              "type": "boolean",
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
               "x-nullable": true
+              
             }
           }
         },

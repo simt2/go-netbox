@@ -20,6 +20,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
+
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
@@ -37,7 +39,7 @@ type DeviceFace struct {
 
 	// value
 	// Required: true
-	Value *bool `json:"value"`
+	Value *int64 `json:"value"`
 }
 
 // Validate validates this device face
@@ -69,9 +71,34 @@ func (m *DeviceFace) validateLabel(formats strfmt.Registry) error {
 	return nil
 }
 
+var deviceFaceTypeValuePropEnum []interface{}
+
+func init() {
+	var res []int64
+	if err := json.Unmarshal([]byte(`[0,1]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		deviceFaceTypeValuePropEnum = append(deviceFaceTypeValuePropEnum, v)
+	}
+}
+
+// prop value enum
+func (m *DeviceFace) validateValueEnum(path, location string, value int64) error {
+	if err := validate.Enum(path, location, value, deviceFaceTypeValuePropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *DeviceFace) validateValue(formats strfmt.Registry) error {
 
 	if err := validate.Required("value", "body", m.Value); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateValueEnum("value", "body", *m.Value); err != nil {
 		return err
 	}
 
